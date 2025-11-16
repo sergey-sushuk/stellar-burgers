@@ -6,7 +6,7 @@ const meta = {
   component: BurgerConstructorUI,
   tags: ['autodocs'],
   parameters: {
-  layout: 'fullscreen'
+    layout: 'fullscreen'
   }
 } satisfies Meta<typeof BurgerConstructorUI>;
 
