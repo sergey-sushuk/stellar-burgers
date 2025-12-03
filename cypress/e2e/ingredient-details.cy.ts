@@ -1,41 +1,20 @@
+import { SELECTORS } from '../support/selectors';
+
 describe('Модальное окно ингредиента', () => {
   beforeEach(() => {
-    cy.intercept('GET', '**/ingredients', {
-      statusCode: 200,
-      fixture: 'ingredients.json'
-    }).as('getIngredients');
-
-    cy.visit('/');
-    cy.wait('@getIngredients');
-    // Ждём, пока ингредиенты появятся на странице
-    cy.get('[data-testid^="ingredient-"]', { timeout: 15000 }).should('have.length.at.least', 1);
+    cy.waitForIngredients();
   });
 
   it('должен открыть модальное окно при клике на ингредиент', () => {
-    cy.get('[data-testid^="ingredient-"]')
-      .should('have.length.at.least', 1)
-      .contains('Краторная булка')
-      .closest('[data-testid^="ingredient-"]')
-      .find('a')
-      .click();
+    cy.openIngredientModal('Краторная булка');
 
-    cy.get('[data-testid="modal"]', { timeout: 5000 }).should('exist');
-    cy.get('[data-testid="modal"]').should('be.visible');
-    cy.get('[data-testid="modal"]').contains('Краторная булка').should('exist');
+    cy.get('@modal').contains('Краторная булка').should('exist');
   });
 
   it('должен отображать правильные данные ингредиента в модальном окне', () => {
-    cy.get('[data-testid^="ingredient-"]')
-      .should('have.length.at.least', 1)
-      .contains('Биокотлета')
-      .closest('[data-testid^="ingredient-"]')
-      .find('a')
-      .click();
+    cy.openIngredientModal('Биокотлета');
 
-    cy.get('[data-testid="modal"]', { timeout: 5000 }).should('exist');
-    cy.get('[data-testid="modal"]').should('be.visible');
-
-    cy.get('[data-testid="modal"]').within(() => {
+    cy.get('@modal').within(() => {
       cy.contains('Биокотлета из марсианской Магнолии').should('exist');
       cy.contains('4242').should('exist');
       cy.contains('420').should('exist');
@@ -45,34 +24,14 @@ describe('Модальное окно ингредиента', () => {
   });
 
   it('должен закрыть модальное окно при клике на крестик', () => {
-    cy.get('[data-testid^="ingredient-"]')
-      .should('have.length.at.least', 1)
-      .contains('Краторная булка')
-      .closest('[data-testid^="ingredient-"]')
-      .find('a')
-      .click();
-
-    cy.get('[data-testid="modal"]', { timeout: 5000 }).should('exist');
-    cy.get('[data-testid="modal"]').should('be.visible');
-
-    cy.get('[data-testid="modal-close"]').click();
-
-    cy.get('[data-testid="modal"]').should('not.exist');
+    cy.openIngredientModal('Краторная булка');
+    cy.closeModal();
   });
 
   it('должен закрыть модальное окно при клике на оверлей', () => {
-    cy.get('[data-testid^="ingredient-"]')
-      .should('have.length.at.least', 1)
-      .contains('Краторная булка')
-      .closest('[data-testid^="ingredient-"]')
-      .find('a')
-      .click();
+    cy.openIngredientModal('Краторная булка');
 
-    cy.get('[data-testid="modal"]', { timeout: 5000 }).should('exist');
-    cy.get('[data-testid="modal"]').should('be.visible');
-
-    cy.get('[data-testid="modal-overlay"]').click({ force: true });
-
-    cy.get('[data-testid="modal"]').should('not.exist');
+    cy.get(SELECTORS.modalOverlay).click({ force: true });
+    cy.get(SELECTORS.modal).should('not.exist');
   });
 });

@@ -3,7 +3,8 @@ import constructorReducer, {
   addIngredient,
   removeIngredient,
   moveIngredient,
-  clearConstructor
+  clearConstructor,
+  initialState
 } from '../constructorSlice';
 import { TIngredient } from '@utils-types';
 
@@ -50,10 +51,6 @@ const mockSauce: TIngredient = {
 };
 
 describe('constructorSlice reducer', () => {
-  const initialState = {
-    bun: null,
-    ingredients: []
-  };
 
   describe('добавление ингредиента', () => {
     it('должен добавить булку в конструктор', () => {
@@ -224,4 +221,5 @@ describe('constructorSlice reducer', () => {
     });
   });
 });
+
 

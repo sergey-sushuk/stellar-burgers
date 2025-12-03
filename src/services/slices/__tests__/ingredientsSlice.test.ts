@@ -1,4 +1,7 @@
-import ingredientsReducer, { fetchIngredients } from '../ingredientsSlice';
+import ingredientsReducer, {
+  fetchIngredients,
+  initialState
+} from '../ingredientsSlice';
 import { TIngredient } from '@utils-types';
 
 const mockIngredients: TIngredient[] = [
@@ -31,11 +34,6 @@ const mockIngredients: TIngredient[] = [
 ];
 
 describe('ingredientsSlice reducer', () => {
-  const initialState = {
-    items: [],
-    isLoading: false,
-    error: null
-  };
 
   describe('fetchIngredients.pending', () => {
     it('должен установить isLoading в true при начале запроса', () => {
@@ -158,4 +156,5 @@ describe('ingredientsSlice reducer', () => {
     });
   });
 });
+
 
